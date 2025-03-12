@@ -2,7 +2,7 @@
   "name": "copilot-atlassian-tools",
   "displayName": "Copilot Atlassian Tools",
   "description": "This extension delivers possibilites to connect to the atlassian api and enhance copilot usage with additional context from your project.",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "publisher": "DenisZunke",
   "author": {
     "name": "Denis Zunke",
