@@ -48,10 +48,10 @@ You have to tell copilot it should ask the tools of this extension for more cont
 
 ### Commands
 
-`Copilot Atlassian Tools: Open Jira` - Opens Jira in your default browser
-`Copilot Atlassian Tools: Open Confluence` - Opens Confluence in your default browser
-`Copilot Atlassian Tools: Show My Open Issues` - Shows a list of your assigned Jira issues
-`Copilot Atlassian Tools: Show My Recent Pages` - Shows a list of your recent Confluence pages
+- `Copilot Atlassian Tools: Open Jira` - Opens Jira in your default browser
+- `Copilot Atlassian Tools: Open Confluence` - Opens Confluence in your default browser
+- `Copilot Atlassian Tools: Show My Open Issues` - Shows a list of your assigned Jira issues
+- `Copilot Atlassian Tools: Show My Recent Pages` - Shows a list of your recent Confluence pages
 
 ## Security
 Your Atlassian credentials are stored in VS Code's secure storage and are only used to communicate with the Atlassian API. No data is sent to third parties.
