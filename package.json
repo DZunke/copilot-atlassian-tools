@@ -27,6 +27,11 @@
         "command": "copilot-atlassian-tools.searchMyIssues",
         "title": "Jira: Show My Open Issues",
         "icon": "$(issues)"
+      },
+      {
+        "command": "copilot-atlassian-tools.searchMyPages",
+        "title": "Confluence: Show My Recent Pages",
+        "icon": "$(book)"
       }
     ],
     "configuration": {

@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import { OpenJiraCommand, SearchMyIssuesCommand } from './JiraCommands';
-import { OpenConfluenceCommand } from './ConfluenceCommands';
+import { OpenConfluenceCommand, SearchMyPagesCommand } from './ConfluenceCommands';
 
 export class CommandManager {
     private commands = [
         new OpenJiraCommand(),
         new OpenConfluenceCommand(),
-        new SearchMyIssuesCommand()
+        new SearchMyIssuesCommand(),
+        new SearchMyPagesCommand()
     ];
 
     /**

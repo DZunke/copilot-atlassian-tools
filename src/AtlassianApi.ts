@@ -46,6 +46,13 @@ export interface JiraResponse {
     startAt: number;
 }
 
+export interface ConfluenceResponse {
+    results: any[];
+    start: number;
+    limit: number;
+    size: number;
+}
+
 export class AtlassianApi {
     public static async fetchJiraIssues(jql: string): Promise<JiraResponse | null> {
         const suiteUrl = Settings.getAtlassianSuiteUrl();
@@ -132,6 +139,58 @@ export class AtlassianApi {
             return await response.json();
         } catch (error) {
             vscode.window.showErrorMessage(`Error fetching user info: ${error instanceof Error ? error.message : String(error)}`);
+            return null;
+        }
+    }
+
+    public static async fetchConfluencePages(accountId: string): Promise<ConfluenceResponse | null> {
+        const suiteUrl = Settings.getAtlassianSuiteUrl();
+        const token = Settings.getAtlassianOAuthToken();
+        const email = Settings.getAtlassianEmail();
+
+        if (!suiteUrl || !token || !email) {
+            return null; // Error messages already shown in the settings methods
+        }
+
+        try {
+            // Create the Basic Auth header (encode email:token in base64)
+            const auth = Buffer.from(`${email}:${token}`).toString('base64');
+
+            // CQL query to find pages where the current user is the creator or contributor
+            // Filtering by last updated for the most recent pages first
+            const cql = encodeURIComponent(`(creator.accountId = "${accountId}" OR contributor.accountId = "${accountId}") order by lastmodified desc`);
+
+            const apiUrl = `${suiteUrl}/wiki/rest/api/content/search?cql=${cql}&expand=history.lastUpdated,space,_links&limit=20`;
+
+            const response = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `Basic ${auth}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 403) {
+                    vscode.window.showErrorMessage(
+                        'Permission denied (403): Your API token doesn\'t have sufficient permissions to access Confluence pages.',
+                        'Check Documentation'
+                    ).then(selection => {
+                        if (selection === 'Check Documentation') {
+                            vscode.env.openExternal(vscode.Uri.parse('https://developer.atlassian.com/cloud/confluence/rest/v1/intro/'));
+                        }
+                    });
+                } else if (response.status === 401) {
+                    vscode.window.showErrorMessage('Authentication failed. Your Atlassian token may be invalid or expired.');
+                } else {
+                    const errorText = await response.text();
+                    vscode.window.showErrorMessage(`API request failed: ${response.status} ${response.statusText}\n${errorText}`);
+                }
+                return null;
+            }
+
+            return await response.json() as ConfluenceResponse;
+        } catch (error) {
+            vscode.window.showErrorMessage(`Error fetching Confluence pages: ${error instanceof Error ? error.message : String(error)}`);
             return null;
         }
     }
