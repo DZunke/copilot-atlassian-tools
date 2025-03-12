@@ -58,7 +58,38 @@
           "description": "OAuth token for Atlassian API access (See: https://id.atlassian.com/manage-profile/security/api-tokens)"
         }
       }
-    }
+    },
+    "languageModelTools": [
+			{
+				"name": "copilot-atlassian-tools-confluence-search",
+				"tags": [
+					"confluence",
+					"search",
+					"copilot-atlassian-tools"
+				],
+				"displayName": "Confluence: Content Search",
+				"canBeReferencedInPrompt": true,
+				"toolReferenceName": "confluence",
+				"icon": "globe",
+				"userDescription": "Searches your Confluence instance for content matching the provided query.",
+				"modelDescription": "Searches your Confluence instance for content matching the provided query. The result will be a list of pages that match the search criteria. It gives additional content to users questions based on their confluence documentation and can so help understanding the users request.",
+				"inputSchema": {
+					"type": "object",
+					"properties": {
+						"keywords": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"description": "The keywords to search for in Confluence. This should be an array of keywords that you want to search for in your Confluence instance."
+						}
+					},
+					"required": [
+						"keywords"
+					]
+				}
+			}
+		]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -78,6 +109,7 @@
     "@typescript-eslint/parser": "^8.25.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "compromise": "^14.14.4",
     "conventional-changelog": "^6.0.0",
     "eslint": "^9.21.0",
     "sinon": "^19.0.2",
