@@ -69,4 +69,4 @@ GitHub Copilot
 Atlassian API
 VS Code Extension API
 
-<p align="center"> Made with ❤️ by <a href="https://github.com/deniszunke">Denis Zunke</a></p>
+<p align="center"> Made with ❤️ by <a href="https://github.com/DZunke">Denis Zunke</a></p>
