@@ -194,4 +194,65 @@ export class AtlassianApi {
             return null;
         }
     }
+
+    /**
+     * Search Jira issues by keywords in title and description
+     * @param query The search query/keywords
+     * @param maxResults Maximum number of results to return (default: 10)
+     * @returns List of matching Jira issues or null if there was an error
+     */
+    public static async searchJiraIssues(query: string, maxResults: number = 10): Promise<JiraIssue[] | null> {
+        const suiteUrl = Settings.getAtlassianSuiteUrl();
+        const token = Settings.getAtlassianOAuthToken();
+        const email = Settings.getAtlassianEmail();
+
+        if (!suiteUrl || !token || !email) {
+            return null; // Error messages already shown in the settings methods
+        }
+
+        try {
+            const auth = Buffer.from(`${email}:${token}`).toString('base64');
+
+            // Create JQL query that searches in summary (title) and description fields
+            // Using ~ for contains operations on both fields
+            const jql = `summary ~ "${query}" OR description ~ "${query}" ORDER BY updated DESC`;
+
+            const response = await fetch(`${suiteUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}`, {
+                headers: {
+                    'Authorization': `Basic ${auth}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 403) {
+                    vscode.window.showErrorMessage(
+                        'Permission denied (403): Your API token doesn\'t have sufficient permissions to search Jira issues.',
+                        'Check Documentation'
+                    ).then(selection => {
+                        if (selection === 'Check Documentation') {
+                            vscode.env.openExternal(vscode.Uri.parse('https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#permissions'));
+                        }
+                    });
+                } else if (response.status === 401) {
+                    vscode.window.showErrorMessage('Authentication failed. Your Atlassian token may be invalid or expired.');
+                } else if (response.status === 400) {
+                    // Handle JQL syntax errors
+                    const errorData = await response.json();
+                    const errorDataJson = errorData as { errorMessages?: string[] };
+                    vscode.window.showErrorMessage(`JQL syntax error: ${errorDataJson.errorMessages?.join(', ') || 'Invalid JQL query'}`);
+                } else {
+                    const errorText = await response.text();
+                    vscode.window.showErrorMessage(`API request failed: ${response.status} ${response.statusText}\n${errorText}`);
+                }
+                return null;
+            }
+
+            const jiraResponse = await response.json() as JiraResponse;
+            return jiraResponse.issues;
+        } catch (error) {
+            vscode.window.showErrorMessage(`Error searching Jira issues: ${error instanceof Error ? error.message : String(error)}`);
+            return null;
+        }
+    }
 }
