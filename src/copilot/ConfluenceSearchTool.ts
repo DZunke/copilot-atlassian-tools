@@ -105,9 +105,20 @@ export class ConfluenceSearchTool {
                 textSummary += `## ${page.title}\n`;
                 textSummary += `**Space:** ${page.spaceName} (${page.spaceKey})\n`;
                 textSummary += `**Last updated:** ${this.formatDate(page.lastUpdated)} by ${page.lastUpdatedBy}\n`;
-                textSummary += `[View in Confluence](${page.url})\n\n`;
+                textSummary += `**URL:** [${page.url}](${page.url})\n\n`;
                 textSummary += `${page.excerpt}\n\n`;
                 textSummary += `---\n\n`;
+            });
+
+            textSummary += `### How to cite these sources\n\n`;
+            textSummary += `When referencing information from these pages in your response, please:\n`;
+            textSummary += `- Include specific page links using markdown: [page title](URL)\n`;
+            textSummary += `- When quoting directly, indicate the source: "quoted text" ([Source](URL))\n`;
+            textSummary += `- Use inline references: According to [Page Title](URL), ...\n\n`;
+
+            textSummary += `### Page References\n\n`;
+            simplifiedPages.forEach(page => {
+                textSummary += `- [${page.title}](${page.url}) - ${page.spaceKey}: ${this.truncateExcerpt(page.excerpt, 100)}\n`;
             });
 
             // Return both text summary and structured JSON
@@ -139,5 +150,11 @@ export class ConfluenceSearchTool {
         } catch (error) {
             return isoString; // Return original if parsing fails
         }
+    }
+
+    private truncateExcerpt(text: string, maxLength: number): string {
+        if (!text) {return '';}
+        if (text.length <= maxLength) {return text;}
+        return text.substring(0, maxLength).trim() + '...';
     }
 }

@@ -75,8 +75,8 @@
         "canBeReferencedInPrompt": true,
         "toolReferenceName": "confluence",
         "icon": "globe",
-        "userDescription": "Searches your Confluence instance for content matching the provided query.",
-        "modelDescription": "Searches your Confluence instance for content matching the provided query. The result will be a list of pages that match the search criteria. It gives additional content to users questions based on their confluence documentation and can so help understanding the users request.",
+        "userDescription": "Searches your Confluence instance for content matching the provided query and provides links to relevant pages.",
+        "modelDescription": "Searches your Confluence instance for content matching the provided query. The result includes pages with their content and URLs. When using information from these results, you MUST include the corresponding Confluence page links in your response to attribute sources properly. Format as 'Source: [Page Title](URL)' when citing information.",
         "inputSchema": {
           "type": "object",
           "properties": {
@@ -85,7 +85,7 @@
               "items": {
                 "type": "string"
               },
-              "description": "The keywords to search for in Confluence. This should be an array of keywords that you want to search for in your Confluence instance."
+              "description": "Extract only domain-relevant keywords from the user's request. Focus on technical terms, project names, concepts, and specific topics. DO NOT include general search terms like 'search', 'find', 'show me', 'what is', or the word 'confluence' itself. Use 2-5 precise keywords that will yield the most relevant results."
             }
           },
           "required": [
@@ -104,8 +104,8 @@
         "canBeReferencedInPrompt": true,
         "toolReferenceName": "jira",
         "icon": "globe",
-        "userDescription": "Searches your Jira instance for content matching the provided query.",
-        "modelDescription": "Searches your Jira instance for content matching the provided query. The result will be a list of issues that match the search criteria. It gives additional content to users questions based on their jira documentation and can so help understanding the users request.",
+        "userDescription": "Searches your Jira instance for content matching the provided query and provides links to relevant issues.",
+        "modelDescription": "Searches your Jira instance for content matching the provided query. The result includes issues with their details and URLs. When using information from these results, you MUST include the corresponding Jira issue links in your response to attribute sources properly. Format as 'Source: [Issue Key - Title](URL)' when citing information.",
         "inputSchema": {
           "type": "object",
           "properties": {
@@ -114,7 +114,7 @@
               "items": {
                 "type": "string"
               },
-              "description": "The keywords to search for in Jira. This should be an array of keywords that you want to search for in your Jira instance."
+              "description": "Extract only domain-relevant keywords from the user's request. Focus on project codes, technical terms, feature names, bug descriptions, and specific topics. DO NOT include general search terms like 'search', 'find', 'ticket', 'issue', or the word 'jira' itself. Use 2-5 precise keywords that will yield the most relevant results."
             }
           },
           "required": [

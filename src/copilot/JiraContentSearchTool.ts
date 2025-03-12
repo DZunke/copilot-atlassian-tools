@@ -119,6 +119,20 @@ export class JiraContentSearchTool {
                 textSummary += `---\n\n`;
             });
 
+            // Add a section with direct issue references for easy copying
+            textSummary += `### Issue References\n\n`;
+            textSummary += `Copy-paste these references:\n\n`;
+            simplifiedIssues.forEach(issue => {
+                textSummary += `- ${issue.key}: ${issue.url}\n`;
+            });
+
+            // Add a section to encourage LLM to use links and reference information
+            textSummary += `\n### Usage Instructions\n\n`;
+            textSummary += `When responding, please utilize the provided links to reference the Jira issues directly. This helps in providing accurate and detailed information to the users.\n\n`;
+            textSummary += `For example, you can say:\n`;
+            textSummary += `- "You can view the details of the issue [${simplifiedIssues[0].key}](${simplifiedIssues[0].url}) for more information."\n`;
+            textSummary += `- "Refer to the issue [${simplifiedIssues[1].key}](${simplifiedIssues[1].url}) for the latest updates."\n`;
+
             // Return both JSON and text formats
             return new vscode.LanguageModelToolResult([
                 new vscode.LanguageModelTextPart(textSummary),
