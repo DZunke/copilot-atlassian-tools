@@ -1,71 +1,72 @@
-# copilot-atlassian-tools README
+# Copilot Atlassian Tools
 
-This is the README for your extension "copilot-atlassian-tools". After writing up a brief description, we recommend including the following sections.
+Copilot Atlassian Tools bridges the gap between your Atlassian workspace and GitHub Copilot in VS Code. It allows Copilot to leverage your team's Confluence documentation and Jira issues as additional context when answering your coding questions.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Copilot Integration
 
-For example if there is an image subfolder under your extension project workspace:
+- **Confluence Knowledge Base**: Access information from your Confluence pages directly in Copilot Chat
+- **Jira Issue Context**: Pull relevant details from Jira issues related to your queries
+- **Enhanced Responses**: Get more contextual and project-specific answers from Copilot
 
-\!\[feature X\]\(images/feature-x.png\)
+### Quick Access
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- **Search My Jira Issues**: Quickly find and open your assigned Jira tickets
+- **Browse Recent Confluence Pages**: Access your recently updated Confluence pages
+- **One-Click Navigation**: Open Jira or Confluence directly from VS Code
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- VS Code 1.98.0 or higher
+- GitHub Copilot extension
+- Active Atlassian account with API access
 
-## Extension Settings
+## Installation
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+1. Download the `vsix` file from the latest release and install it
+2. Configure your Atlassian credentials in settings:
+   - Atlassian Suite URL (e.g., `https://your-domain.atlassian.net`)
+   - Atlassian Email
+   - Atlassian API Token ([Get one here](https://id.atlassian.com/manage-profile/security/api-tokens))
 
-For example:
+## Configuration
 
-This extension contributes the following settings:
+```json
+{
+  "copilot-atlassian-tools.atlassianSuiteUrl": "https://your-domain.atlassian.net",
+  "copilot-atlassian-tools.atlassianEmail": "your.email@example.com",
+  "copilot-atlassian-tools.atlassianOAuthToken": "your-api-token"
+}
+```
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Usage
+
+### Copilot Tools
+
+You have to tell copilot it should ask the tools of this extension for more context. So the tools `#jira` and `#confluence` are available and will do requests to your configured atlassian api.
+
+### Commands
+
+`Copilot Atlassian Tools: Open Jira` - Opens Jira in your default browser
+`Copilot Atlassian Tools: Open Confluence` - Opens Confluence in your default browser
+`Copilot Atlassian Tools: Show My Open Issues` - Shows a list of your assigned Jira issues
+`Copilot Atlassian Tools: Show My Recent Pages` - Shows a list of your recent Confluence pages
+
+## Security
+Your Atlassian credentials are stored in VS Code's secure storage and are only used to communicate with the Atlassian API. No data is sent to third parties.
 
 ## Known Issues
+This extension is currently a prototype and may have stability issues
+Some Confluence content formats may not be properly parsed
+Complex Jira queries may timeout or return incomplete results
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Release Notes
+## Acknowledgements
+GitHub Copilot
+Atlassian API
+VS Code Extension API
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+<p align="center"> Made with ❤️ by <a href="https://github.com/deniszunke">Denis Zunke</a></p>
