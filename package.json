@@ -8,6 +8,10 @@
     "name": "Denis Zunke",
     "email": "denis.zunke@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DZunke/copilot-atlassian-tools"
+  },
   "license": "MIT",
   "engines": {
     "vscode": "^1.98.0"
@@ -60,65 +64,65 @@
       }
     },
     "languageModelTools": [
-			{
-				"name": "copilot-atlassian-tools-confluence-search",
-				"tags": [
-					"confluence",
-					"search",
-					"copilot-atlassian-tools"
-				],
-				"displayName": "Confluence: Content Search",
-				"canBeReferencedInPrompt": true,
-				"toolReferenceName": "confluence",
-				"icon": "globe",
-				"userDescription": "Searches your Confluence instance for content matching the provided query.",
-				"modelDescription": "Searches your Confluence instance for content matching the provided query. The result will be a list of pages that match the search criteria. It gives additional content to users questions based on their confluence documentation and can so help understanding the users request.",
-				"inputSchema": {
-					"type": "object",
-					"properties": {
-						"keywords": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							},
-							"description": "The keywords to search for in Confluence. This should be an array of keywords that you want to search for in your Confluence instance."
-						}
-					},
-					"required": [
-						"keywords"
-					]
-				}
-			},
-			{
-				"name": "copilot-atlassian-tools-jira-search",
-				"tags": [
-					"jira",
-					"search",
-					"copilot-atlassian-tools"
-				],
-				"displayName": "Jira: Content Search",
-				"canBeReferencedInPrompt": true,
-				"toolReferenceName": "jira",
-				"icon": "globe",
-				"userDescription": "Searches your Jira instance for content matching the provided query.",
-				"modelDescription": "Searches your Jira instance for content matching the provided query. The result will be a list of issues that match the search criteria. It gives additional content to users questions based on their jira documentation and can so help understanding the users request.",
-				"inputSchema": {
-					"type": "object",
-					"properties": {
-						"keywords": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							},
-							"description": "The keywords to search for in Jira. This should be an array of keywords that you want to search for in your Jira instance."
-						}
-					},
-					"required": [
-						"keywords"
-					]
-				}
-			}
-		]
+      {
+        "name": "copilot-atlassian-tools-confluence-search",
+        "tags": [
+          "confluence",
+          "search",
+          "copilot-atlassian-tools"
+        ],
+        "displayName": "Confluence: Content Search",
+        "canBeReferencedInPrompt": true,
+        "toolReferenceName": "confluence",
+        "icon": "globe",
+        "userDescription": "Searches your Confluence instance for content matching the provided query.",
+        "modelDescription": "Searches your Confluence instance for content matching the provided query. The result will be a list of pages that match the search criteria. It gives additional content to users questions based on their confluence documentation and can so help understanding the users request.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "The keywords to search for in Confluence. This should be an array of keywords that you want to search for in your Confluence instance."
+            }
+          },
+          "required": [
+            "keywords"
+          ]
+        }
+      },
+      {
+        "name": "copilot-atlassian-tools-jira-search",
+        "tags": [
+          "jira",
+          "search",
+          "copilot-atlassian-tools"
+        ],
+        "displayName": "Jira: Content Search",
+        "canBeReferencedInPrompt": true,
+        "toolReferenceName": "jira",
+        "icon": "globe",
+        "userDescription": "Searches your Jira instance for content matching the provided query.",
+        "modelDescription": "Searches your Jira instance for content matching the provided query. The result will be a list of issues that match the search criteria. It gives additional content to users questions based on their jira documentation and can so help understanding the users request.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "The keywords to search for in Jira. This should be an array of keywords that you want to search for in your Jira instance."
+            }
+          },
+          "required": [
+            "keywords"
+          ]
+        }
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
