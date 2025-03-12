@@ -8,12 +8,8 @@
     "vscode": "^1.98.0"
   },
   "categories": [
-    "Copilot",
-    "Extensions",
-    "Atlassian",
-    "Tools",
-    "API",
-    "Context"
+    "Chat",
+    "Other"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
@@ -26,6 +22,11 @@
       {
         "command": "copilot-atlassian-tools.openConfluence",
         "title": "Open Confluence"
+      },
+      {
+        "command": "copilot-atlassian-tools.searchMyIssues",
+        "title": "Jira: Show My Open Issues",
+        "icon": "$(issues)"
       }
     ],
     "configuration": {
@@ -35,6 +36,16 @@
           "type": "string",
           "default": "",
           "description": "URL to your Atlassian suite (e.g., https://your-domain.atlassian.net)"
+        },
+        "copilot-atlassian-tools.atlassianEmail": {
+          "type": "string",
+          "default": "",
+          "description": "Your Atlassian account email address (e.g., yourname@domain.com)"
+        },
+        "copilot-atlassian-tools.atlassianOAuthToken": {
+          "type": "string",
+          "default": "",
+          "description": "OAuth token for Atlassian API access (See: https://id.atlassian.com/manage-profile/security/api-tokens)"
         }
       }
     }
