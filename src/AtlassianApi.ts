@@ -53,6 +53,20 @@ export interface ConfluenceResponse {
     size: number;
 }
 
+export interface ConfluencePage {
+    id: string;
+    title: string;
+    type: string;
+    excerpt: string;
+    content: string;
+    spaceKey: string;
+    spaceName: string;
+    lastUpdated: string;
+    createdBy: string;
+    lastUpdatedBy: string;
+    url: string;
+}
+
 export class AtlassianApi {
     public static async fetchJiraIssues(jql: string): Promise<JiraResponse | null> {
         const suiteUrl = Settings.getAtlassianSuiteUrl();
@@ -254,5 +268,118 @@ export class AtlassianApi {
             vscode.window.showErrorMessage(`Error searching Jira issues: ${error instanceof Error ? error.message : String(error)}`);
             return null;
         }
+    }
+
+    /**
+     * Search for Confluence pages by keywords in title and content
+     * @param query The search query/keywords
+     * @param maxResults Maximum number of results to return (default: 10)
+     * @returns List of matching Confluence pages or null if there was an error
+     */
+    public static async searchConfluenceContent(query: string, maxResults: number = 10): Promise<ConfluencePage[] | null> {
+        const suiteUrl = Settings.getAtlassianSuiteUrl();
+        const token = Settings.getAtlassianOAuthToken();
+        const email = Settings.getAtlassianEmail();
+
+        if (!suiteUrl || !token || !email) {
+            return null; // Error messages already shown in the settings methods
+        }
+
+        try {
+            // Create the Basic Auth header (encode email:token in base64)
+            const auth = Buffer.from(`${email}:${token}`).toString('base64');
+
+            // CQL query to search in title and content
+            // Using ~ for contains operations on both fields
+            const cql = encodeURIComponent(`(title ~ "${query}" OR text ~ "${query}") ORDER BY lastmodified DESC`);
+
+            const apiUrl = `${suiteUrl}/wiki/rest/api/content/search?cql=${cql}&expand=body.view,space,version,_links&limit=${maxResults}`;
+
+            const response = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `Basic ${auth}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 403) {
+                    vscode.window.showErrorMessage(
+                        'Permission denied (403): Your API token doesn\'t have sufficient permissions to access Confluence content.',
+                        'Check Documentation'
+                    ).then(selection => {
+                        if (selection === 'Check Documentation') {
+                            vscode.env.openExternal(vscode.Uri.parse('https://developer.atlassian.com/cloud/confluence/rest/v1/intro/'));
+                        }
+                    });
+                } else if (response.status === 401) {
+                    vscode.window.showErrorMessage('Authentication failed. Your Atlassian token may be invalid or expired.');
+                } else if (response.status === 400) {
+                    // Handle CQL syntax errors
+                    const errorData = await response.json();
+                    const errorDataJson = errorData as { message?: string };
+                    vscode.window.showErrorMessage(`CQL syntax error: ${errorDataJson.message || 'Invalid CQL query'}`);
+                } else {
+                    const errorText = await response.text();
+                    vscode.window.showErrorMessage(`API request failed: ${response.status} ${response.statusText}\n${errorText}`);
+                }
+                return null;
+            }
+
+            const confluenceResponse = await response.json() as ConfluenceResponse;
+
+            if (!confluenceResponse.results || confluenceResponse.results.length === 0) {
+                return [];
+            }
+
+            // Transform the raw response into a more usable structure
+            return confluenceResponse.results.map(page => this.transformConfluencePage(page, suiteUrl));
+
+        } catch (error) {
+            vscode.window.showErrorMessage(`Error searching Confluence content: ${error instanceof Error ? error.message : String(error)}`);
+            return null;
+        }
+    }
+
+    /**
+     * Transform a raw Confluence page object into a structured ConfluencePage
+     */
+    private static transformConfluencePage(rawPage: any, suiteUrl: string): ConfluencePage {
+        // Extract the text content from HTML body
+        let textContent = '';
+        if (rawPage.body && rawPage.body.view && rawPage.body.view.value) {
+            textContent = this.stripHtml(rawPage.body.view.value);
+        }
+
+        // Create an excerpt (first 500 characters)
+        const excerpt = textContent.length > 500
+            ? textContent.substring(0, 500) + '...'
+            : textContent;
+
+        return {
+            id: rawPage.id,
+            title: rawPage.title,
+            type: rawPage.type,
+            excerpt: excerpt,
+            content: textContent,
+            spaceKey: rawPage.space?.key || '',
+            spaceName: rawPage.space?.name || '',
+            lastUpdated: rawPage.version?.when || '',
+            createdBy: rawPage.version?.by?.displayName || '',
+            url: `${suiteUrl}/wiki${rawPage._links.webui}`,
+            lastUpdatedBy: rawPage.version?.by?.displayName || ''
+        };
+    }
+
+    /**
+     * Utility method to strip HTML tags from content
+     */
+    private static stripHtml(html: string): string {
+        if (!html) return '';
+
+        return html
+            .replace(/<[^>]*>/g, ' ')  // Replace HTML tags with space
+            .replace(/\s+/g, ' ')      // Normalize whitespace
+            .trim();                   // Remove leading/trailing whitespace
     }
 }
