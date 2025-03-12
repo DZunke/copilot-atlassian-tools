@@ -1,15 +1,30 @@
 import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
-// import * as myExtension from '../../extension';
 
 suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+    suiteSetup(async function () {
+        // Get the extension and ensure it's activated
+        const extension = vscode.extensions.getExtension('denis-zunke.copilot-atlassian-tools');
+        if (!extension) {
+            throw new Error('Extension not found');
+        }
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
-	});
+        if (!extension.isActive) {
+            await extension.activate();
+        }
+
+        vscode.window.showInformationMessage('Extension activated, starting tests');
+    });
+
+    test('Test Jira command registration', async () => {
+        // Verify command exists
+        const commands = await vscode.commands.getCommands();
+        assert.ok(commands.includes('copilot-atlassian-tools.openJira'));
+    });
+
+    test('Test Confluence command registration', async () => {
+        // Verify command exists
+        const commands = await vscode.commands.getCommands();
+        assert.ok(commands.includes('copilot-atlassian-tools.openConfluence'));
+    });
 });

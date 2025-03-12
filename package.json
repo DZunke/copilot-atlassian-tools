@@ -3,21 +3,41 @@
   "displayName": "Copilot Atlassian Tools",
   "description": "This extension delivers possibilites to connect to the atlassian api and enhance copilot usage with additional context from your project.",
   "version": "0.0.1",
+  "publisher": "denis-zunke",
   "engines": {
     "vscode": "^1.98.0"
   },
   "categories": [
-    "Other"
+    "Copilot",
+    "Extensions",
+    "Atlassian",
+    "Tools",
+    "API",
+    "Context"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "copilot-atlassian-tools.helloWorld",
-        "title": "Hello World"
+        "command": "copilot-atlassian-tools.openJira",
+        "title": "Open Jira"
+      },
+      {
+        "command": "copilot-atlassian-tools.openConfluence",
+        "title": "Open Confluence"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Copilot Atlassian Tools",
+      "properties": {
+        "copilot-atlassian-tools.atlassianSuiteUrl": {
+          "type": "string",
+          "default": "",
+          "description": "URL to your Atlassian suite (e.g., https://your-domain.atlassian.net)"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -31,15 +51,15 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/sinon": "^17.0.4",
     "@types/vscode": "^1.98.0",
     "@typescript-eslint/eslint-plugin": "^8.25.0",
     "@typescript-eslint/parser": "^8.25.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "conventional-changelog": "^6.0.0",
     "eslint": "^9.21.0",
+    "sinon": "^19.0.2",
     "typescript": "^5.7.3"
-  },
-  "dependencies": {
-    "conventional-changelog": "^6.0.0"
   }
 }

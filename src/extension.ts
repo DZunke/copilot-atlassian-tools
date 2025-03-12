@@ -1,25 +1,28 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { Settings } from './settings';
 
 // This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "copilot-atlassian-tools" is now active!');
+	// This logging is only posted once the extension was activated
+	console.log('Congratulations, the extension to the world of Atlassian within Copilot is not active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('copilot-atlassian-tools.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Copilot Atlassian Tools!');
-	});
+    const openJiraCommand = vscode.commands.registerCommand('copilot-atlassian-tools.openJira', () => {
+        const suiteUrl = Settings.getAtlassianSuiteUrl();
+        if (suiteUrl) {
+            vscode.env.openExternal(vscode.Uri.parse(`${suiteUrl}/jira`));
+        }
+    });
 
-	context.subscriptions.push(disposable);
+    const openConfluenceCommand = vscode.commands.registerCommand('copilot-atlassian-tools.openConfluence', () => {
+        const suiteUrl = Settings.getAtlassianSuiteUrl();
+        if (suiteUrl) {
+            vscode.env.openExternal(vscode.Uri.parse(`${suiteUrl}/wiki`));
+        }
+    });
+
+    context.subscriptions.push(openJiraCommand);
+    context.subscriptions.push(openConfluenceCommand);
 }
 
 // This method is called when your extension is deactivated
