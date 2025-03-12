@@ -38,9 +38,9 @@ export class BaseApiService {
                 vscode.window.showErrorMessage('Authentication failed. Your Atlassian token may be invalid or expired.');
             } else if (response.status === 400) {
                 const errorData = await response.json();
-                const errorMessage = 'errorMessages' in errorData
-                    ? `JQL syntax error: ${(errorData as any).errorMessages?.join(', ') || 'Invalid query'}`
-                    : `Syntax error: ${(errorData as any).message || 'Invalid query'}`;
+                const errorMessage = 'errorMessages' in (errorData as any)
+                    ? `JQL syntax error: (errorData as any).errorMessages?.join(', ') || 'Invalid query'`
+                    : `Syntax error: (errorData as any).message || 'Invalid query'`;
                 vscode.window.showErrorMessage(errorMessage);
             } else {
                 const errorText = await response.text();
@@ -62,6 +62,6 @@ export class BaseApiService {
     }
 
     protected static getSuiteUrl(): string | null {
-        return Settings.getAtlassianSuiteUrl();
+        return Settings.getAtlassianSuiteUrl() ?? null;
     }
 }

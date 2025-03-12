@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 suite('Extension Test Suite', () => {
     suiteSetup(async function () {
         // Get the extension and ensure it's activated
-        const extension = vscode.extensions.getExtension('denis-zunke.copilot-atlassian-tools');
+        const extension = vscode.extensions.getExtension('DenisZunke.copilot-atlassian-tools');
         if (!extension) {
             throw new Error('Extension not found');
         }
