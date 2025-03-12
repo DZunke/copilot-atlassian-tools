@@ -127,7 +127,7 @@ export class ConfluenceSearchTool {
      * Format ISO date string to a more readable format
      */
     private formatDate(isoString: string): string {
-        if (!isoString) return 'Unknown date';
+        if (!isoString) {return 'Unknown date';}
 
         try {
             const date = new Date(isoString);
