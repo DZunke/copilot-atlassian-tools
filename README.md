@@ -24,7 +24,7 @@ Copilot Atlassian Tools bridges the gap between your Atlassian workspace and Git
 
 ## Installation
 
-1. Download the `vsix` file from the latest release and install it
+1. Download the `vsix` file from the latest release and install it or install from [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=DenisZunke.copilot-atlassian-tools&ssr=false#overview)
 2. Configure your Atlassian credentials in settings:
    - Atlassian Suite URL (e.g., `https://your-domain.atlassian.net`)
    - Atlassian Email
