@@ -1,3 +1,11 @@
+**PROJECT ARCHIVED** 
+
+This project was a gap filler before the Agent MCP Ecosystem popped up and established fast. I recommend utilizing the Atlassian MCP as it is integrated best directly with Copilot and other agents. Not only in VSCode UI but also in Copilot CLI and other agents. So this experimental project does not bring any value and it's further development will not bring any more value. 
+
+See https://www.atlassian.com/platform/remote-mcp-server for reference. 
+
+---
+
 # Copilot Atlassian Tools
 
 Copilot Atlassian Tools bridges the gap between your Atlassian workspace and GitHub Copilot in VS Code. It allows Copilot to leverage your team's Confluence documentation and Jira issues as additional context when answering your coding questions.
